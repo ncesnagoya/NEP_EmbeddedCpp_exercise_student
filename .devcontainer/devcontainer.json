@@ -1,0 +1,15 @@
+{
+  "name": "QProX 組込みC++演習",
+  "image": "mcr.microsoft.com/devcontainers/cpp:1-ubuntu-24.04",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools"
+      ],
+      "settings": {
+        "files.encoding": "utf8"
+      }
+    }
+  },
+  "postCreateCommand": "g++ --version"
+}

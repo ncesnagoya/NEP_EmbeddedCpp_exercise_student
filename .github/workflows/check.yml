@@ -1,0 +1,31 @@
+name: 演習チェック
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  step1:
+    name: step1（演習1〜3）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 自動チェック
+        run: make check-step1 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
+
+  step2:
+    name: step2（演習4〜8）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 自動チェック
+        run: make check-step2 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
+
+  step3:
+    name: step3（モダンC++・オプション）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 自動チェック
+        run: make check-step3 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,16 @@
+# ビルド生成物
+build/
+a.out
+*.o
+*.obj
+*.exe
+app
+
+# 実行時に生成されるバイナリファイル（binary_fileクラスが書き込むファイル）
+test
+
+# 提出用zip
+submission.zip
+
+# OS固有
+.DS_Store
