@@ -26,7 +26,7 @@ bool binary_file::open(const char* path, bool read_only)
     mode = "rb";
   else
     mode = "wb+";
-  std::FILE* stream = std::fopen(path, mode);
+  FILE* stream = fopen(path, mode);
   if (stream)
   {
     close();
@@ -42,7 +42,7 @@ bool binary_file::close()
 {
   if (!is_open())
     return false;
-  bool r = std::fclose(this->stream_) == 0;
+  bool r = fclose(this->stream_) == 0;
   this->stream_ = nullptr;
   return r;
 }
@@ -53,7 +53,7 @@ long binary_file::seek(long pos)
 {
   if (!is_open())
     return EOF;
-  return std::fseek(this->stream_, pos, SEEK_SET);
+  return fseek(this->stream_, pos, SEEK_SET);
 }
 
 // ファイルの現在位置を取得する
@@ -62,7 +62,7 @@ long binary_file::tell()
 {
   if (!is_open())
     return EOF;
-  return std::ftell(this->stream_);
+  return ftell(this->stream_);
 }
 
 // ☆ 演習2-1 ☆

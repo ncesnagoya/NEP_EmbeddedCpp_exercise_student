@@ -54,7 +54,7 @@ make run-prep   # 予習ミニ演習をビルドして実行（cc が必要）
 
 # 演習環境
 
-演習環境の詳細（wandbox / GitHub Codespaces / ローカル環境）と期待出力は「４演習.pdf」p.2-7, 19, 28 を参照してください。
+演習環境の詳細（wandbox / GitHub Codespaces / ローカル環境）と期待出力は「４演習.pdf」の「演習環境」および「プログラムの出力例（ステップ１・ステップ２）」のページを参照してください。
 本リポジトリは **GitHub Codespaces** に対応しています（環境構築不要・ブラウザのみで演習可能）。
 
 ## GitHub Codespaces での演習手順（受講者向け）

@@ -2,7 +2,7 @@
 #ifndef BINARY_FILE_H_
 #define BINARY_FILE_H_
 
-#include <cstdio>
+#include <stdio.h>
 
 // バイナリファイルを扱うためのサンプルクラス
 class binary_file
@@ -33,7 +33,7 @@ public:
   long tell();
   
   // 演習で使用するメンバー変数
-  std::FILE* stream_;
+  FILE* stream_;
 
 
   // ☆ 演習3 ☆
