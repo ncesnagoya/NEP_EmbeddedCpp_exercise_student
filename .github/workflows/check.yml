@@ -6,6 +6,14 @@ on:
   workflow_dispatch:
 
 jobs:
+  prep:
+    name: prep（前提知識ミニ演習）
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 自動チェック
+        run: make check-prep 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
+
   step1:
     name: step1（演習1〜3）
     runs-on: ubuntu-latest

@@ -49,7 +49,8 @@ step2 は内容が多いため、2つの区切りで進めると理解しやす�
 アンケートで「事前の基礎理解がないと演習時間内では難しい」という声があったため，当日スムーズに進めるための準備です（所要30〜60分）。
 
 ```sh
-make run-prep   # 予習ミニ演習をビルドして実行（cc が必要）
+make run-prep     # 予習ミニ演習をビルドして実行（cc が必要）
+make check-prep   # 予習ミニ演習の自動チェック（出力が期待値と一致するか）
 ```
 
 # 演習環境
@@ -65,13 +66,15 @@ make run-prep   # 予習ミニ演習をビルドして実行（cc が必要）
 4. ターミナルで以下を実行する
 
 ```sh
+make run-prep     # 予習ミニ演習をビルドして実行
+make check-prep   # 予習ミニ演習の自動チェック
 make run-step1    # step1 をビルドして実行
 make check-step1  # step1 の自動チェック（演習1〜3の完了確認）
 make run-step2    # step2 をビルドして実行
 make check-step2  # step2 の自動チェック（演習4〜8の完了確認）
 make run-step3    # step3-modern（オプション）をビルドして実行
 make check-step3  # step3 の自動チェック（演習M-1, M-2）
-make check        # step1〜step3 をまとめてチェック
+make check        # prep〜step3 をまとめてチェック
 ```
 
 - 演習は `step1/problem/`，`step2/problem/`，`step3-modern/problem/` の中のファイルを編集して進めてください
@@ -99,9 +102,27 @@ make zip          # submission.zip を作成（各ステップの problem ソー
 
 ## 自動チェック（自分で確認するためのもの）
 
-- `make check-step1` 〜 `make check-step3` で，コンパイル・実行結果・アクセス制御（演習3）・名前空間（演習5）・`= delete`（演習M-1）を自分で確認できます
+- `make check-prep` 〜 `make check-step3` で，コンパイル・実行結果・アクセス制御（演習3）・名前空間（演習5）・`= delete`（演習M-1）を自分で確認できます
 - GitHub にプッシュした場合は GitHub Actions 上でも同じチェックが走り，コミット横に ✓ / ✗ が表示されます（任意。提出は上記 Google Drive で行います）
 - 初期状態ではチェックは失敗（コンパイルエラー）します。演習を進めると順に OK が増えていきます
 - 演習7で `data` の型を変更した場合，`written size` は型に応じて変わります（チェックは型に依存しない項目のみ確認します）
+
+## 講師向け: 配布・提出の運用
+
+このリポジトリには `answer/` や途中解答（`ex1/`, `ex2-3/`）が含まれるため，**そのまま受講者に公開しないでください**。
+配布専用リポジトリを分けて運用します。
+
+1. **このリポジトリは private のまま講師用マスターとして保持する**（回答・内部情報を含む）
+2. **配布用リポジトリを別に用意する**：`answer/` と途中解答を除き，
+   `prep/problem/`，`step1/problem/`，`step2/problem/`，`step3-modern/problem/`，
+   `.devcontainer/`，`.github/`，`Makefile`，`tools/`，受講者向け README だけを入れる。
+   履歴経由の漏えいを防ぐため，git 履歴は引き継がず新規に作成する
+3. 配布用リポジトリを「Template repository」に設定する（Settings → General → Template repository）
+4. 受講者に `https://github.com/<org>/<student-repo>/generate` のリンクを配布する
+5. 受講者は自分のアカウントにリポジトリを（公開・非公開いずれかで）生成し，Codespaces で演習を進める
+6. **提出は Google Drive**：受講者は `make zip` で作った `submission.zip`（氏名付き）を提出先フォルダにアップロードする。
+   この方式なら受講者はリポジトリを非公開のままにでき，講師は Drive 上で提出物を一括管理できる
+
+GitHub が使えない受講者には，フォールバックとして **wandbox**（共有リンク配布）を併用してください（「４演習.pdf」の「環境３：wandbox」を参照）。
 
 ※ Codespaces の無料枠は個人アカウントで月120コア時間（2コアマシンで60時間）です。1日の講座であれば十分です。

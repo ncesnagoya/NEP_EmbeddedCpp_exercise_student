@@ -1,0 +1,4 @@
+is open? Y
+written size = 256
+read size = 256
+same

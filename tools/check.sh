@@ -5,6 +5,9 @@
 # （通常は make check-step1 / make check-step2 から呼び出す）
 #
 # チェック内容:
+#   prep:（前提知識のミニ演習）
+#     [1] prep/problem がコンパイルできる（C言語）
+#     [2] 実行結果が期待出力（予習教材.md）と一致する
 #   step1:
 #     [1] step1/problem がコンパイルできる（演習1, 2）
 #     [2] 実行結果が期待出力（４演習.pdf p.16 演習2,3）と一致する
@@ -22,8 +25,43 @@
 
 set -u
 
-STEP="${1:?usage: check.sh step1|step2|step3}"
+STEP="${1:?usage: check.sh prep|step1|step2|step3}"
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+PASS=0
+FAIL=0
+ok()  { echo "  [OK] $1"; PASS=$((PASS+1)); }
+ng()  { echo "  [NG] $1"; FAIL=$((FAIL+1)); }
+
+# --- prep（C言語のミニ演習）は専用処理 -----------------------------------
+if [ "$STEP" = "prep" ]; then
+  SRC="$ROOT/prep/problem"
+  BUILD="$ROOT/build/check-prep"
+  TOOLS="$ROOT/tools"
+  CC="${CC:-cc}"
+  CFLAGS="${CFLAGS:--Wall -Wextra}"
+  mkdir -p "$BUILD"
+  echo "=== prep チェック開始 ==="
+  if $CC $CFLAGS -o "$BUILD/byte_store" "$SRC"/*.c 2> "$BUILD/build.log"; then
+    ok "コンパイル成功"
+    ( cd "$BUILD" && ./byte_store > output.txt 2>&1 )
+    if [ $? -ne 0 ]; then
+      ng "実行時エラー"
+    elif diff -u "$TOOLS/expected_prep.txt" "$BUILD/output.txt" > "$BUILD/output.diff"; then
+      ok "出力が期待値と一致（予習教材.md の期待出力）"
+    else
+      ng "出力が期待値と異なる"
+      sed 's/^/    | /' "$BUILD/output.diff"
+    fi
+  else
+    ng "コンパイルエラー（詳細: build/check-prep/build.log）"
+    sed 's/^/    | /' "$BUILD/build.log" | head -15
+  fi
+  echo "=== prep 結果: OK ${PASS} 件 / NG ${FAIL} 件 ==="
+  [ $FAIL -eq 0 ]
+  exit $?
+fi
+
 if [ "$STEP" = "step3" ]; then
   SRC="$ROOT/step3-modern/problem"
 else
@@ -33,11 +71,6 @@ BUILD="$ROOT/build/check-$STEP"
 TOOLS="$ROOT/tools"
 CXX="${CXX:-g++}"
 CXXFLAGS="${CXXFLAGS:--std=c++11 -Wall -Wextra}"
-
-PASS=0
-FAIL=0
-ok()  { echo "  [OK] $1"; PASS=$((PASS+1)); }
-ng()  { echo "  [NG] $1"; FAIL=$((FAIL+1)); }
 
 mkdir -p "$BUILD"
 echo "=== ${STEP} チェック開始 ==="

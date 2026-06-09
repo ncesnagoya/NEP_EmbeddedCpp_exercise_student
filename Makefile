@@ -3,6 +3,7 @@
 # 使い方:
 #   make prep         ... 予習ミニ演習 prep/problem をビルド
 #   make run-prep     ... 予習ミニ演習をビルドして実行
+#   make check-prep   ... 予習ミニ演習の自動チェック
 #   make step1        ... step1/problem をビルド
 #   make run-step1    ... step1/problem をビルドして実行
 #   make check-step1  ... step1 の自動チェック（演習1〜3の完了確認）
@@ -17,7 +18,7 @@ CXXFLAGS ?= -std=c++11 -Wall -Wextra
 CC       ?= cc
 CFLAGS   ?= -Wall -Wextra
 
-.PHONY: all prep run-prep step1 step2 step3 run-step1 run-step2 run-step3 \
+.PHONY: all prep run-prep check-prep step1 step2 step3 run-step1 run-step2 run-step3 \
         check check-step1 check-step2 check-step3 zip clean
 
 all: step1 step2 step3
@@ -50,7 +51,10 @@ run-step2: step2
 run-step3: step3
 	cd build/step3 && ./app
 
-check: check-step1 check-step2 check-step3
+check: check-prep check-step1 check-step2 check-step3
+
+check-prep:
+	@bash tools/check.sh prep
 
 check-step1:
 	@bash tools/check.sh step1
