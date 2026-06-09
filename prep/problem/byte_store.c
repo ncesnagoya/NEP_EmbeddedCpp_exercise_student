@@ -23,30 +23,30 @@
 #define N 256
 
 /* 【予習P-1: 構造体】
- * FILE ポインタ stream を1つ持つ構造体 byte_store を定義してください。
+ * FILE ポインタ stream_ を1つ持つ構造体 byte_store を定義してください。
  */
 struct byte_store {
-    /* ここに FILE* stream; を書く */
+    /* ここに FILE* stream_; を書く */
 };
 
 /* ファイルを開く。成功で 1，失敗で 0 を返す */
 int bs_open(struct byte_store* bs, const char* path, int read_only)
 {
     const char* mode = read_only ? "rb" : "wb+";
-    bs->stream = fopen(path, mode);
-    return bs->stream != NULL;
+    bs->stream_ = fopen(path, mode);
+    return bs->stream_ != NULL;
 }
 
 int bs_is_open(const struct byte_store* bs)
 {
-    return bs->stream != NULL;
+    return bs->stream_ != NULL;
 }
 
 void bs_close(struct byte_store* bs)
 {
-    if (bs->stream) {
-        fclose(bs->stream);
-        bs->stream = NULL;
+    if (bs->stream_) {
+        fclose(bs->stream_);
+        bs->stream_ = NULL;
     }
 }
 
@@ -58,7 +58,7 @@ size_t bs_write(struct byte_store* bs, const unsigned char* buffer, size_t n)
 {
     if (!bs_is_open(bs))
         return 0;
-    /* return fwrite(... , ... , ... , bs->stream); を書く */
+    /* return fwrite(... , ... , ... , bs->stream_); を書く */
     return 0;
 }
 
@@ -70,14 +70,14 @@ size_t bs_read(struct byte_store* bs, unsigned char* buffer, size_t n)
 {
     if (!bs_is_open(bs))
         return 0;
-    /* return fread(... , ... , ... , bs->stream); を書く */
+    /* return fread(... , ... , ... , bs->stream_); を書く */
     return 0;
 }
 
 int main(void)
 {
     struct byte_store bs;
-    bs.stream = NULL;
+    bs.stream_ = NULL;
 
     if (!bs_open(&bs, "prep_test", 0)) {
         printf("open failed\n");
@@ -105,7 +105,7 @@ int main(void)
     size_t n = bs_write(&bs, data, N);
     printf("written size = %u\n", (unsigned)n);
 
-    fseek(bs.stream, 0, SEEK_SET);
+    fseek(bs.stream_, 0, SEEK_SET);
     n = bs_read(&bs, buffer, N);
     printf("read size = %u\n", (unsigned)n);
 
